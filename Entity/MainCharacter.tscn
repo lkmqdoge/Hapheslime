@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://bn2xb0f46nlbd"]
+
+[ext_resource type="Script" uid="uid://d4mr4udj5xusd" path="res://Scripts/Actor/Actor.cs" id="1_h7ke7"]
+[ext_resource type="Script" uid="uid://nmso2d2pyk0g" path="res://Scripts/Actor/Health.cs" id="2_d5mi4"]
+[ext_resource type="Texture2D" uid="uid://d3e1l4yocx6ho" path="res://icon.svg" id="3_cw5a4"]
+[ext_resource type="Script" uid="uid://bmqch705t01nk" path="res://Scripts/Actor/Hitbox.cs" id="4_6al5o"]
+
+[sub_resource type="Resource" id="Resource_cw5a4"]
+script = ExtResource("2_d5mi4")
+metadata/_custom_type_script = "uid://nmso2d2pyk0g"
+
+[node name="MainCharacter" type="CharacterBody2D"]
+script = ExtResource("1_h7ke7")
+Health = SubResource("Resource_cw5a4")
+metadata/_custom_type_script = "uid://d4mr4udj5xusd"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+texture = ExtResource("3_cw5a4")
+
+[node name="Hitbox" type="Area2D" parent="."]
+script = ExtResource("4_6al5o")
+metadata/_custom_type_script = "uid://bmqch705t01nk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]

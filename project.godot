@@ -10,13 +10,27 @@ config_version=5
 
 [application]
 
-config/name="Slime Escape"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/name="Hapheslime"
+run/main_scene="uid://nkalmtftuf7w"
+config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SceneManager="*res://Scripts/SceneManager.cs"
 
 [dotnet]
 
 project/assembly_name="Slime Escape"
+
+[layer_names]
+
+2d_physics/layer_1="World"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Projectile"
+2d_physics/layer_5="Item"
+2d_physics/layer_6="Prop"
 
 [rendering]
 
