@@ -1,0 +1,97 @@
+[gd_scene load_steps=10 format=3 uid="uid://bn2xb0f46nlbd"]
+
+[ext_resource type="Texture2D" uid="uid://bwu2gfrmgba23" path="res://Art/Entity/MC/hapheslime_mc_12x12_anim.png" id="3_6al5o"]
+[ext_resource type="Script" uid="uid://dhjy73pdy2s4r" path="res://Core/Actor/Controller.cs" id="3_ue10n"]
+[ext_resource type="Script" uid="uid://bmqch705t01nk" path="res://Core/Actor/Hitbox.cs" id="4_6al5o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q3a6g"]
+size = Vector2(4, 10)
+
+[sub_resource type="Animation" id="Animation_q3a6g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_6al5o"]
+resource_name = "idle"
+loop_mode = 1
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_0mrvm"]
+resource_name = "walk"
+length = 0.666683
+loop_mode = 1
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q3a6g"]
+_data = {
+&"RESET": SubResource("Animation_q3a6g"),
+&"idle": SubResource("Animation_6al5o"),
+&"walk": SubResource("Animation_0mrvm")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6al5o"]
+size = Vector2(4, 10)
+
+[node name="MainCharacter" type="CharacterBody2D"]
+metadata/_custom_type_script = "uid://d4mr4udj5xusd"
+
+[node name="Controller" type="Node" parent="."]
+script = ExtResource("3_ue10n")
+metadata/_custom_type_script = "uid://dhjy73pdy2s4r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_q3a6g")
+
+[node name="View" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="View"]
+position = Vector2(0, -1)
+texture = ExtResource("3_6al5o")
+hframes = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="View"]
+libraries = {
+&"": SubResource("AnimationLibrary_q3a6g")
+}
+
+[node name="Hitbox" type="Area2D" parent="."]
+script = ExtResource("4_6al5o")
+metadata/_custom_type_script = "uid://bmqch705t01nk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_6al5o")

@@ -1,5 +1,5 @@
 using Godot;
-using Hapheslime.Scripts;
+using Hapheslime.Core;
 
 namespace Hapheslime;
 
