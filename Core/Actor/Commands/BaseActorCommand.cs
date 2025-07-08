@@ -1,4 +1,4 @@
-using Hapheslime.Core.Command;
+using Hapheslime.Common;
 
 namespace Hapheslime.Core.Actor.Commands;
 

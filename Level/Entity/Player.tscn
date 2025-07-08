@@ -1,8 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://bn2xb0f46nlbd"]
+[gd_scene load_steps=14 format=3 uid="uid://bn2xb0f46nlbd"]
 
+[ext_resource type="Script" uid="uid://cxhv22rlpsrhk" path="res://Level/Entity/Player.cs" id="1_ma52t"]
+[ext_resource type="Script" uid="uid://frkclavphf0m" path="res://Level/Entity/PlayerController.cs" id="2_xo2sk"]
 [ext_resource type="Texture2D" uid="uid://bwu2gfrmgba23" path="res://Art/Entity/MC/hapheslime_mc_12x12_anim.png" id="3_6al5o"]
-[ext_resource type="Script" uid="uid://dhjy73pdy2s4r" path="res://Core/Actor/Controller.cs" id="3_ue10n"]
+[ext_resource type="Script" uid="uid://bukj33xcmtepd" path="res://Core/Actor/States/ActorStateMachine.cs" id="3_wxydq"]
 [ext_resource type="Script" uid="uid://bmqch705t01nk" path="res://Core/Actor/Hitbox.cs" id="4_6al5o"]
+[ext_resource type="Script" uid="uid://c3ky5kry5w1lp" path="res://Core/Actor/States/IdleState.cs" id="4_xo2sk"]
+[ext_resource type="Script" uid="uid://dcujp83lcoh8t" path="res://Core/Actor/States/WalkState.cs" id="5_3iwpp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q3a6g"]
 size = Vector2(4, 10)
@@ -68,11 +72,26 @@ _data = {
 size = Vector2(4, 10)
 
 [node name="MainCharacter" type="CharacterBody2D"]
+script = ExtResource("1_ma52t")
 metadata/_custom_type_script = "uid://d4mr4udj5xusd"
 
-[node name="Controller" type="Node" parent="."]
-script = ExtResource("3_ue10n")
-metadata/_custom_type_script = "uid://dhjy73pdy2s4r"
+[node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("Actor")]
+script = ExtResource("2_xo2sk")
+Actor = NodePath("..")
+metadata/_custom_type_script = "uid://frkclavphf0m"
+
+[node name="ActorStateMachine" type="Node" parent="." node_paths=PackedStringArray("Controller")]
+script = ExtResource("3_wxydq")
+Controller = NodePath("../PlayerController")
+metadata/_custom_type_script = "uid://bukj33xcmtepd"
+
+[node name="IdleState" type="Node" parent="ActorStateMachine"]
+script = ExtResource("4_xo2sk")
+metadata/_custom_type_script = "uid://c3ky5kry5w1lp"
+
+[node name="WalkState" type="Node" parent="ActorStateMachine"]
+script = ExtResource("5_3iwpp")
+metadata/_custom_type_script = "uid://dcujp83lcoh8t"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_q3a6g")

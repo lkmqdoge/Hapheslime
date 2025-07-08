@@ -1,4 +1,4 @@
-namespace Hapheslime.Core.FSM;
+namespace Hapheslime.Common;
 
 public interface IPredicate
 {

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using System.Windows.Input;
 using Godot;
 using Hapheslime.Core.Actor.Commands;
 
 namespace Hapheslime.Core.Actor;
 
 [GlobalClass]
-public abstract partial class BaseActor : CharacterBody2D
+public abstract partial class Actor : CharacterBody2D
 {
     public Health Health { get; }
     public AnimationPlayer AnimationPlayer { get; }

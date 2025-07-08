@@ -1,89 +1,49 @@
 using System;
-using System.Collections.Generic;
+using Godot;
 
 namespace Hapheslime.Core.FSM;
 
-public class StateMachine
+[GlobalClass]
+public abstract partial class StateMachine : Node
 {
-    private StateNode _current;
-    private Dictionary<Type, StateNode> _nodes = [];
-    private HashSet<ITransition> _anyTransitions = [];
+    public event Action<State> StateChanged;
 
-    public void Update(double delta)
+    protected State _currentState;
+
+    public override void _Ready()
     {
-        var transition = GetTransition();
-        if (transition != null)
-            ChangeState(transition.To);
-
-        _current.State?.Update(delta);
+        foreach (var child in GetChildren())
+            if (child is State v)
+                v.Setup(this);
     }
 
-    public void PhysicUpdate(double delta)
+    public void SetState(State state)
     {
-        _current.State?.PhysicUpdate(delta);
-    }
-
-    public void SetState(IState state)
-    {
-        _current = _nodes[state.GetType()];
-        _current.State?.Enter();
-    }
-
-    public void AddTransition(IState from, IState to, IPredicate condition)
-    {
-        GetOrAddNode(from).AddTransition(GetOrAddNode(to).State, condition);
-    }
-
-    public void AddAnyTransition(IState to, IPredicate condition)
-    {
-        _anyTransitions.Add(new Transition(GetOrAddNode(to).State, condition));
-    }
-
-    private StateNode GetOrAddNode(IState state)
-    {
-        var node = _nodes.GetValueOrDefault(state.GetType());
-        if (node == null)
+        if (state != null)
         {
-            node = new StateNode(state);
-            _nodes.Add(state.GetType(), node);
+            _currentState?.Exit();
+            _currentState = state;
+            _currentState.Enter();
+
+            StateChanged?.Invoke(state);
         }
-
-        return node;
     }
 
-    private void ChangeState(IState state)
+    public void SetState<T>()
+        where T : State
     {
-        if (state == _current.State)
-            return;
-
-        var previousState = _current.State;
-        var nextState = _nodes[state.GetType()].State;
-
-        previousState?.Exit();
-        nextState?.Enter();
-
-        _current = _nodes[state.GetType()];
+        foreach (var child in GetChildren())
+            if (child is State v && child.Name == nameof(T))
+                SetState(v);
     }
 
-    private ITransition GetTransition()
+    public override void _PhysicsProcess(double delta)
     {
-        foreach (var transition in _anyTransitions)
-            if (transition.Condition.Evaluate())
-                return transition;
-
-        foreach (var transition in _current.Transitions)
-            if (transition.Condition.Evaluate())
-                return transition;
-
-        return null;
+        _currentState.UpdatePhysic(delta);
     }
 
-    class StateNode(IState state)
+    public override void _Process(double delta)
     {
-        public IState State { get; } = state;
-        public HashSet<ITransition> Transitions { get; } = [];
-
-        public void AddTransition(IState to, IPredicate condition) =>
-            Transitions.Add(new Transition(to, condition));
+        _currentState.UpdateLogic(delta);
     }
 }

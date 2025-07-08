@@ -1,4 +1,4 @@
-namespace Hapheslime.Core.Command;
+namespace Hapheslime.Common;
 
 public interface ICommand
 {

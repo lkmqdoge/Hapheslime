@@ -1,15 +1,12 @@
-using Hapheslime.Core.FSM;
+using Godot;
 
 namespace Hapheslime.Core.Actor.States;
 
-public partial class IdleState : BaseState
+[GlobalClass]
+public partial class IdleState : ActorState
 {
-    public IdleState(BaseController controller)
-        : base(controller) { }
-
     public override void Enter()
     {
-        base.Enter();
-        _animation.Play("walk");
+        
     }
 }

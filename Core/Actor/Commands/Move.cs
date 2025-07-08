@@ -4,9 +4,9 @@ namespace Hapheslime.Core.Actor.Commands;
 
 public class Move : BaseActorCommand
 {
-    private float _amount;
+    private Vector2 _amount;
 
-    public Move(Mover mover, float amount)
+    public Move(Mover mover, Vector2 amount)
         : base(mover)
     {
         _amount = amount;
@@ -14,11 +14,11 @@ public class Move : BaseActorCommand
 
     public override void Do()
     {
-        _mover.Velocity += new Vector2(_amount, 0);
+        _mover.Velocity += _amount;
     }
 
     public override void Undo()
     {
-        _mover.Velocity -= new Vector2(_amount, 0);
+        _mover.Velocity -= _amount;
     }
 }

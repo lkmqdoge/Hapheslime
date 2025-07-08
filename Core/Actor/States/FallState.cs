@@ -1,15 +1,22 @@
+using Godot;
+using Hapheslime.Core.Actor.Commands;
 using Hapheslime.Core.FSM;
 
 namespace Hapheslime.Core.Actor.States;
 
-public partial class FallState : BaseState
+[GlobalClass]
+public partial class FallState : ActorState
 {
-    public FallState(BaseController controller)
-        : base(controller) { }
+    [Export]
+    private float _gravity = 90.0f;
 
-    public override void Enter()
+    [Export]
+    private float _speed = 78.0f;
+
+    public override void UpdatePhysic(double delta)
     {
-        base.Enter();
-        _animation.Play("fall");
+        _actor.AddCommand(new Move(_controller.Mover, new Vector2(
+            _speed, _gravity * (float)delta
+        )));
     }
 }

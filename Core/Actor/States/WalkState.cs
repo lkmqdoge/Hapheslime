@@ -1,22 +1,27 @@
+using System;
+using Godot;
 using Hapheslime.Core.FSM;
 
 namespace Hapheslime.Core.Actor.States;
 
-public partial class WalkState : BaseState
+[GlobalClass]
+public partial class WalkState : ActorState
 {
-    public WalkState(BaseController controller)
-        : base(controller) { }
+    private const string AnimationName = "walk";
+
+    [Export]
+    private float _speed = 10.0f;
+
+    [Export]
+    private float _acceleration = 4.0f;
+
+    [Export]
+    private float _friction = 3.0f;
 
     public override void Enter()
     {
-        base.Enter();
-        _animation.Play("walk");
+        _actor.AnimationPlayer.Play(AnimationName);
     }
 
-    public override void PhysicUpdate(double delta)
-    {
-        base.PhysicUpdate(delta);
-
-
-    }
+    public override void UpdatePhysic(double delta) { }
 }
