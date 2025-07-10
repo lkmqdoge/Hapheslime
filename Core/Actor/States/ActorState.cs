@@ -1,21 +1,18 @@
 using System;
+using Hapheslime.Common;
 using Hapheslime.Core.FSM;
 
 namespace Hapheslime.Core.Actor.States;
 
 public abstract partial class ActorState : State
 {
-    protected Controller _controller;
-    protected Actor _actor;
+    protected BaseActor _actor;
 
     public override void Setup(StateMachine stateMachine)
     {
-        base.Setup(stateMachine);
-
         if (stateMachine is ActorStateMachine v)
         {
-            _controller = v.Controller;
-            _actor = v.Controller.Actor;
+            _actor = v.Actor;
         }
         else
         {
@@ -23,5 +20,21 @@ public abstract partial class ActorState : State
                 $"{stateMachine.GetType()} is not supported to use with {GetType()}"
             );
         }
+
+        base.Setup(stateMachine);
+    }
+
+    public override void ProccesEvent(Event @event)
+    {
+        if (@event is ControllerEvent v)
+        {
+            if (TryGetState(v.Key, out State state))
+                _stateMachine.SetState(state);
+        }
+    }
+
+    protected override void ProccesTransition(Transition transition)
+    {
+        transition.Setup(_actor);
     }
 }

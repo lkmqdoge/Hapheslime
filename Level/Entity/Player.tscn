@@ -1,12 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://bn2xb0f46nlbd"]
+[gd_scene load_steps=18 format=3 uid="uid://bn2xb0f46nlbd"]
 
-[ext_resource type="Script" uid="uid://cxhv22rlpsrhk" path="res://Level/Entity/Player.cs" id="1_ma52t"]
+[ext_resource type="Script" uid="uid://cxhv22rlpsrhk" path="res://Level/Entity/Player.cs" id="1_l2ph1"]
 [ext_resource type="Script" uid="uid://frkclavphf0m" path="res://Level/Entity/PlayerController.cs" id="2_xo2sk"]
 [ext_resource type="Texture2D" uid="uid://bwu2gfrmgba23" path="res://Art/Entity/MC/hapheslime_mc_12x12_anim.png" id="3_6al5o"]
 [ext_resource type="Script" uid="uid://bukj33xcmtepd" path="res://Core/Actor/States/ActorStateMachine.cs" id="3_wxydq"]
 [ext_resource type="Script" uid="uid://bmqch705t01nk" path="res://Core/Actor/Hitbox.cs" id="4_6al5o"]
+[ext_resource type="Script" uid="uid://b8uhtqdxm64or" path="res://Core/FSM/KeyTransition.cs" id="4_x76km"]
 [ext_resource type="Script" uid="uid://c3ky5kry5w1lp" path="res://Core/Actor/States/IdleState.cs" id="4_xo2sk"]
 [ext_resource type="Script" uid="uid://dcujp83lcoh8t" path="res://Core/Actor/States/WalkState.cs" id="5_3iwpp"]
+[ext_resource type="Script" uid="uid://0j3q8ul5l2vf" path="res://Core/Actor/States/ActorIsOnFloor.cs" id="6_jq4my"]
+[ext_resource type="Script" uid="uid://deuwehs6p2gji" path="res://Core/Actor/States/JumpState.cs" id="6_vmmbp"]
+[ext_resource type="Script" uid="uid://x44a55ikd8jg" path="res://Core/Actor/States/FallState.cs" id="8_l2ph1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q3a6g"]
 size = Vector2(4, 10)
@@ -71,27 +75,64 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6al5o"]
 size = Vector2(4, 10)
 
-[node name="MainCharacter" type="CharacterBody2D"]
-script = ExtResource("1_ma52t")
-metadata/_custom_type_script = "uid://d4mr4udj5xusd"
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine")]
+script = ExtResource("1_l2ph1")
+StateMachine = NodePath("ActorStateMachine")
+metadata/_custom_type_script = "uid://dbs6i8penbq4y"
 
 [node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("Actor")]
 script = ExtResource("2_xo2sk")
 Actor = NodePath("..")
 metadata/_custom_type_script = "uid://frkclavphf0m"
 
-[node name="ActorStateMachine" type="Node" parent="." node_paths=PackedStringArray("Controller")]
+[node name="ActorStateMachine" type="Node" parent="." node_paths=PackedStringArray("Actor", "_currentState")]
 script = ExtResource("3_wxydq")
-Controller = NodePath("../PlayerController")
+Actor = NodePath("..")
+_currentState = NodePath("FallState")
 metadata/_custom_type_script = "uid://bukj33xcmtepd"
 
 [node name="IdleState" type="Node" parent="ActorStateMachine"]
 script = ExtResource("4_xo2sk")
 metadata/_custom_type_script = "uid://c3ky5kry5w1lp"
 
+[node name="KeyTransition" type="Node" parent="ActorStateMachine/IdleState" node_paths=PackedStringArray("KeyStates")]
+script = ExtResource("4_x76km")
+KeyStates = {
+"jump": NodePath("../../JumpState"),
+"move_left": NodePath("../../WalkState"),
+"move_right": NodePath("../../WalkState")
+}
+metadata/_custom_type_script = "uid://b8uhtqdxm64or"
+
+[node name="ActorIsOnFloor" type="Node" parent="ActorStateMachine/IdleState" node_paths=PackedStringArray("To")]
+script = ExtResource("6_jq4my")
+Negated = true
+To = NodePath("../../FallState")
+metadata/_custom_type_script = "uid://0j3q8ul5l2vf"
+
 [node name="WalkState" type="Node" parent="ActorStateMachine"]
 script = ExtResource("5_3iwpp")
 metadata/_custom_type_script = "uid://dcujp83lcoh8t"
+
+[node name="KeyTransition" type="Node" parent="ActorStateMachine/WalkState" node_paths=PackedStringArray("KeyStates")]
+script = ExtResource("4_x76km")
+KeyStates = {
+"jump": NodePath("../../JumpState")
+}
+metadata/_custom_type_script = "uid://b8uhtqdxm64or"
+
+[node name="JumpState" type="Node" parent="ActorStateMachine"]
+script = ExtResource("6_vmmbp")
+metadata/_custom_type_script = "uid://deuwehs6p2gji"
+
+[node name="FallState" type="Node" parent="ActorStateMachine"]
+script = ExtResource("8_l2ph1")
+metadata/_custom_type_script = "uid://x44a55ikd8jg"
+
+[node name="ActorIsOnFloor" type="Node" parent="ActorStateMachine/FallState" node_paths=PackedStringArray("To")]
+script = ExtResource("6_jq4my")
+To = NodePath("../../IdleState")
+metadata/_custom_type_script = "uid://0j3q8ul5l2vf"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_q3a6g")

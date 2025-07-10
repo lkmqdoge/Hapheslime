@@ -7,7 +7,5 @@ namespace Hapheslime.Core.Actor.States;
 public partial class ActorStateMachine : StateMachine
 {
     [Export]
-    public Controller Controller { get; private set; }
-
-    public override void _Ready() { }
+    public BaseActor Actor { get; private set; }
 }

@@ -1,4 +1,5 @@
 using Godot;
+using Hapheslime.Core.FSM;
 
 namespace Hapheslime.Core.Actor;
 
@@ -6,16 +7,16 @@ namespace Hapheslime.Core.Actor;
 public abstract partial class Controller : Node
 {
     [Export]
-    public Actor Actor { get; set; }
-
-    public Mover Mover { get; protected set; }
+    public BaseActor Actor { get; set; }
 
     public bool Enabled { get; set; } = true;
 
-    public Vector2 Direction { get; private set; }
+    public Vector2 Direction { get; protected set; }
 
-    public override void _PhysicsProcess(double delta)
+    protected StateMachine _stateMachine;
+
+    public override void _Ready()
     {
-        Direction = Input.GetVector();
+        _stateMachine = Actor.StateMachine;
     }
 }

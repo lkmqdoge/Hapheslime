@@ -1,11 +1,14 @@
-using Hapheslime.Common;
+using Godot;
 
 namespace Hapheslime.Core.FSM;
 
-public class Transition(State to, IPredicate condition)
+[GlobalClass]
+public abstract partial class Transition : Node
 {
-    public readonly State To = to;
-    public readonly IPredicate Condition = condition;
+    [Export]
+    public State To { get; private set; }
 
-    public bool CheckCondition() => Condition.Evaluate();
+    public virtual void Setup(Node node) { }
+
+    public abstract bool CheckCondition();
 }

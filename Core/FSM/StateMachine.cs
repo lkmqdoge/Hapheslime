@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace Hapheslime.Core.FSM;
@@ -8,6 +10,7 @@ public abstract partial class StateMachine : Node
 {
     public event Action<State> StateChanged;
 
+    [Export]
     protected State _currentState;
 
     public override void _Ready()
@@ -16,6 +19,10 @@ public abstract partial class StateMachine : Node
             if (child is State v)
                 v.Setup(this);
     }
+
+    public override void _PhysicsProcess(double delta) => _currentState.UpdatePhysic(delta);
+
+    public override void _Process(double delta) => _currentState.UpdateLogic(delta);
 
     public void SetState(State state)
     {
@@ -37,13 +44,7 @@ public abstract partial class StateMachine : Node
                 SetState(v);
     }
 
-    public override void _PhysicsProcess(double delta)
-    {
-        _currentState.UpdatePhysic(delta);
-    }
+    public void ProccesEvent(Event @event) => _currentState.ProccesEvent(@event);
 
-    public override void _Process(double delta)
-    {
-        _currentState.UpdateLogic(delta);
-    }
+    public IEnumerable<string> GetStateKeys() => _currentState.GetKeyConditions().Concat(_currentState.GetAllowedKeys());
 }

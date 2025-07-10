@@ -1,6 +1,5 @@
 using Godot;
-using Hapheslime.Core.Actor.Commands;
-using Hapheslime.Core.FSM;
+using Hapheslime.Core.Actor.Motion.Commands;
 
 namespace Hapheslime.Core.Actor.States;
 
@@ -15,8 +14,6 @@ public partial class FallState : ActorState
 
     public override void UpdatePhysic(double delta)
     {
-        _actor.AddCommand(new Move(_controller.Mover, new Vector2(
-            _speed, _gravity * (float)delta
-        )));
+        _actor.AddCommand(new Move(_actor.Mover, new Vector2(0, _gravity * (float)delta)));
     }
 }

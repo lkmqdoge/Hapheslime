@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dvbxsycf7u3mj" path="res://Level/Stage/Main/Main.cs" id="1_bl4qj"]
 [ext_resource type="TileSet" uid="uid://3oxqfeoidq0l" path="res://Resources/Tileset/Tileset_Main.tres" id="2_bl4qj"]
-[ext_resource type="PackedScene" uid="uid://bn2xb0f46nlbd" path="res://Level/Entity/Player.tscn" id="3_2ukrr"]
+[ext_resource type="PackedScene" uid="uid://bn2xb0f46nlbd" path="res://Level/Entity/Player.tscn" id="3_73ecr"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_bl4qj")
@@ -11,7 +11,7 @@ script = ExtResource("1_bl4qj")
 tile_map_data = PackedByteArray("AAAAAAIAAAAAAAIAAAABAAIAAAABAAIAAAACAAIAAAABAAIAAAADAAIAAAABAAIAAAAEAAIAAAABAAIAAAAFAAIAAAACAAIAAAAFAAEAAAACAAEAAAAEAAEAAAABAAEAAAADAAEAAAABAAEAAAACAAEAAAABAAAAAAABAAEAAAABAAAAAAAAAAEAAAAAAAAAAAAIAAIAAAAAAAIAAAAJAAIAAAABAAIAAAAKAAIAAAACAAIAAAAKAAEAAAACAAEAAAAJAAEAAAABAAEAAAAIAAEAAAAAAAAAAAAFAAAAAAAAAAYAAAAEAAAAAAAAAAYAAAAGAAEAAAABAAYAAAAHAAEAAAABAAYAAAAEAP//AAADAAcAAAADAAAAAAACAAcAAAAJAAAAAAABAAcAAAAIAAAAAAAAAAcAAAAIAP//AAAAAAcAAAAIAP7/AAAAAAcAAAAIAP3/AAAAAAcAAAAIAPz/AAAAAAcAAAAIAPv/AAAAAAcAAAAHAPv/AAACAAAAAAAGAPv/AAABAAEAAAAFAPv/AAAAAAEAAAAGAPz/AAABAAIAAAAHAPz/AAACAAIAAAAFAPz/AAAAAAIAAAAJAPv/AAAAAAAAAAAKAPv/AAABAAAAAAALAPv/AAACAAEAAAAKAPz/AAABAAIAAAAJAPz/AAAAAAIAAAALAPz/AAACAAIAAAA=")
 tile_set = ExtResource("2_bl4qj")
 
-[node name="Player" parent="." instance=ExtResource("3_2ukrr")]
-position = Vector2(9, 3)
-
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="MainCharacter" parent="." instance=ExtResource("3_73ecr")]
+position = Vector2(16, -69)

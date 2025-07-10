@@ -1,6 +1,6 @@
 using Hapheslime.Common;
 
-namespace Hapheslime.Core.Actor.Commands;
+namespace Hapheslime.Core.Actor.Motion.Commands;
 
 public abstract class BaseActorCommand(Mover mover) : ICommand
 {
